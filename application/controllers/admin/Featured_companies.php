@@ -11,6 +11,31 @@ class Featured_companies extends CI_Controller
         $this->load->model('admin/Featured_companies_model');
     }
 
+    /**
+     * Shrink an uploaded image so it is at most $max px on its longest side.
+     * Only shrinks (never enlarges small logos). Fails silently - the upload still succeeds.
+     */
+    private function shrink_image($upload_data, $max = 480)
+    {
+        if (empty($upload_data['is_image'])) {
+            return;
+        }
+        if ($upload_data['image_width'] <= $max && $upload_data['image_height'] <= $max) {
+            return;
+        }
+        $this->load->library('image_lib');
+        $this->image_lib->initialize([
+            'image_library'  => 'gd2',
+            'source_image'   => $upload_data['full_path'],
+            'maintain_ratio' => TRUE,
+            'width'          => $max,
+            'height'         => $max,
+            'quality'        => '80%',
+        ]);
+        $this->image_lib->resize();
+        $this->image_lib->clear();
+    }
+
     public function index()
     {
         $data['employers'] = $this->Featured_companies_model->get_all_employers();
@@ -53,6 +78,7 @@ class Featured_companies extends CI_Controller
 
             if ($this->upload->do_upload('logo_file')) {
                 $upload_data = $this->upload->data();
+                $this->shrink_image($upload_data);
                 // $logo_path = 'assets/images/' . $upload_data['file_name'];
                 $logo_path = './ALL_UPLOADS/images/' . $upload_data['file_name'];
             } else {
@@ -129,6 +155,7 @@ class Featured_companies extends CI_Controller
 
             if ($this->upload->do_upload('logo_file')) {
                 $upload_data = $this->upload->data();
+                $this->shrink_image($upload_data);
                 // $logo_path = 'assets/images/' . $upload_data['file_name'];
                 $logo_path = './ALL_UPLOADS/images/' . $upload_data['file_name'];
             } else {

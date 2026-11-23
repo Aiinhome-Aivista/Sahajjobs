@@ -13,22 +13,21 @@ $mockInterviewUrl = $is_logged_in
 
 ?>
 
+<!--
 <!DOCTYPE html>
 
 <html lang="en">
 
-
-
 <head>
+-->
 
      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4658394539738219"
      crossorigin="anonymous"></script>
 
+<!--
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
 
     <title><?= isset($meta_title) ? $meta_title : 'SahajJobs - India & UAE Jobs' ?></title>
 
@@ -37,8 +36,13 @@ $mockInterviewUrl = $is_logged_in
 
     <meta name="keywords"
         content="<?= isset($meta_keywords) ? $meta_keywords : 'jobs, job portal, job search, employment, career portal, hiring, recruitment platform, remote work, job listings, jobs in India, entry level jobs, finance jobs, healthcare jobs, IT jobs, urgent hiring, walk-in jobs,' ?>">
+-->
 
-
+    <!-- Preload the hero image (LCP) so the browser starts downloading it immediately -->
+    <link rel="preload" as="image" href="./ALL_UPLOADS/images/SahajLanding1-1280.webp" type="image/webp"
+        media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="./ALL_UPLOADS/images/SahajLanding1-1920.webp" type="image/webp"
+        media="(min-width: 769px)" fetchpriority="high">
 
     <link rel="icon" type="image/x-icon" href="https://sahajjobs.com/favicon.ico">
 
@@ -1380,6 +1384,7 @@ $mockInterviewUrl = $is_logged_in
 
         .image-grid img {
             width: 100%;
+            height: auto;
             object-fit: cover;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -1617,6 +1622,7 @@ $mockInterviewUrl = $is_logged_in
         .resume-left img {
             width: 100%;
             max-width: 600px;
+            height: auto;
         }
 
         .resume-right {
@@ -1858,14 +1864,24 @@ $mockInterviewUrl = $is_logged_in
             display: none !important;
         }
 
+        /* Hero background: optimized WebP (desktop 1920px, mobile 1280px). Original: SahajLanding1.jpeg (1 MB) */
+        .hero-section .hero-bg {
+            background-image: url('./ALL_UPLOADS/images/SahajLanding1-1920.webp');
+        }
+
+        @media (max-width: 768px) {
+            .hero-section .hero-bg {
+                background-image: url('./ALL_UPLOADS/images/SahajLanding1-1280.webp');
+            }
+        }
+
     </style>
 
-
+<!--
 </head>
 
-
-
 <body>
+-->
 
     <!-- Hero Section -->
 
@@ -1873,8 +1889,7 @@ $mockInterviewUrl = $is_logged_in
 
         
 
-            <div class="container" style="background-image: url('./ALL_UPLOADS/images/SahajLanding1.jpeg'); 
-            background-size: cover; 
+            <div class="container hero-bg" style="background-size: cover;
             background-position: center; 
             background-repeat: no-repeat;
             padding: 85px 20px;
@@ -2119,7 +2134,7 @@ $mockInterviewUrl = $is_logged_in
                                                 <div class="t-vertical-track">
                                                     <?php foreach ($testimonials as $t): ?>
                                                         <div class="t-card vertical">
-                                                            <img src="<?= base_url($t->image) ?>" class="t-img" alt="">
+                                                            <img src="<?= base_url($t->image) ?>" class="t-img" alt="Candidate photo" width="80" height="80" loading="lazy" decoding="async">
                                                             <div class="t-review">“<?= htmlspecialchars($t->review) ?>”</div>
                                                             <div class="t-name">- <?= htmlspecialchars($t->candidate_name) ?>
                                                             </div>
@@ -2131,7 +2146,7 @@ $mockInterviewUrl = $is_logged_in
 
                                                     <?php foreach ($testimonials as $t): ?>
                                                         <div class="t-card vertical">
-                                                            <img src="<?= base_url($t->image) ?>" class="t-img" alt="">
+                                                            <img src="<?= base_url($t->image) ?>" class="t-img" alt="Candidate photo" width="80" height="80" loading="lazy" decoding="async">
                                                             <div class="t-review">“<?= htmlspecialchars($t->review) ?>”</div>
                                                             <div class="t-name">- <?= htmlspecialchars($t->candidate_name) ?>
                                                             </div>
@@ -2197,7 +2212,7 @@ $mockInterviewUrl = $is_logged_in
 
                             <!-- Left Image -->
                             <div class="resume-left">
-                                <img style="border-radius: 12px;" src="<?= base_url('./ALL_UPLOADS/images/SahajCV.jpeg'); ?>" alt="Resume">
+                                <img style="border-radius: 12px;" src="<?= base_url('./ALL_UPLOADS/images/SahajCV.jpeg'); ?>" alt="Free online CV maker for freshers" width="900" height="675" loading="lazy" decoding="async">
                             </div>
 
                             <!-- Right Content -->
@@ -2254,11 +2269,11 @@ $mockInterviewUrl = $is_logged_in
                     <div class="testimonial-main-wrapper-img col-lg-12 col-md-12">
                         <div class="image-grid">
                             <a href="https://mymdindia.com/" target="_blank" class="image-link">
-                                <img src="./ALL_UPLOADS/images/myMD.jpeg" alt="my MD">
+                                <img src="./ALL_UPLOADS/images/myMD.jpeg" alt="myMD" width="288" height="191" loading="lazy" decoding="async">
                             </a>
 
                             <a href="https://aiinhome.com" target="_blank" class="image-link">
-                                <img src="./ALL_UPLOADS/images/AiiH.jpg" alt="Aiinhome">
+                                <img src="./ALL_UPLOADS/images/AiiH.jpg" alt="Aiinhome" width="480" height="320" loading="lazy" decoding="async">
                             </a>
                         </div>
                     </div>
@@ -2281,7 +2296,7 @@ $mockInterviewUrl = $is_logged_in
                             <div class="featured-card">
 
                                 <img src="<?= base_url($company->logo) ?>"
-                                    alt="<?= htmlspecialchars($company->company_name) ?>">
+                                    alt="<?= htmlspecialchars($company->company_name) ?>" height="40" loading="lazy" decoding="async">
 
                                 <h5><?= htmlspecialchars($company->company_name) ?></h5>
 
@@ -2294,7 +2309,8 @@ $mockInterviewUrl = $is_logged_in
                                 <p><?= htmlspecialchars($company->description) ?></p>
 
                                 <a href="<?= base_url($job_search_base . '?company=' . urlencode($company->company_name)) ?>"
-                                    class="btn btn-sm" style="background:#FFF44F; color:#29374d;">
+                                    class="btn btn-sm" style="background:#FFF44F; color:#29374d;"
+                                    aria-label="View jobs at <?= htmlspecialchars($company->company_name) ?>">
                                     View jobs
                                 </a>
 
@@ -2334,16 +2350,33 @@ $mockInterviewUrl = $is_logged_in
                     <div class="banner-right position-relative">
 
                          <!-- Desktop Video -->
-                        <video autoplay muted loop playsinline class="banner-video">
+                        <video id="bannerVideo" muted loop playsinline preload="none"
+                            poster="./ALL_UPLOADS/images/image-vid.jpg" class="banner-video">
 
                             <source src="./ALL_UPLOADS/videos/image_video.mp4" type="video/mp4">
 
                             Your browser does not support the video tag.
 
                         </video>
+                        <script>
+                            // Play only on desktop widths. On mobile the video is hidden by CSS,
+                            // so it is never downloaded (preload="none" + no autoplay).
+                            (function () {
+                                var v = document.getElementById('bannerVideo');
+                                var mq = window.matchMedia('(min-width: 769px)');
+                                function start() {
+                                    if (mq.matches && v.paused) {
+                                        var p = v.play();
+                                        if (p && p.catch) p.catch(function () {});
+                                    }
+                                }
+                                start();
+                                if (mq.addEventListener) mq.addEventListener('change', start);
+                            })();
+                        </script>
 
                         <!-- Mobile Image -->
-                        <img src="./ALL_UPLOADS/images/image-vid.jpg" class="banner-mobile-img" alt="Banner Image">
+                        <img src="./ALL_UPLOADS/images/image-vid.jpg" class="banner-mobile-img" alt="Banner Image" width="876" height="492" loading="lazy" decoding="async">
 
                     </div>
 
@@ -2826,9 +2859,8 @@ $mockInterviewUrl = $is_logged_in
 
     </script>
 
-
+<!--
 </body>
 
-
-
 </html>
+-->

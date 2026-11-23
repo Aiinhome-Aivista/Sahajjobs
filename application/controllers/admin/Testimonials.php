@@ -10,6 +10,31 @@ class Testimonials extends CI_Controller
         $this->load->model('admin/Testimonials_model');
     }
 
+    /**
+     * Shrink an uploaded image so it is at most $max px on its longest side.
+     * Only shrinks (never enlarges small images). Fails silently - the upload still succeeds.
+     */
+    private function shrink_image($upload_data, $max = 480)
+    {
+        if (empty($upload_data['is_image'])) {
+            return;
+        }
+        if ($upload_data['image_width'] <= $max && $upload_data['image_height'] <= $max) {
+            return;
+        }
+        $this->load->library('image_lib');
+        $this->image_lib->initialize([
+            'image_library'  => 'gd2',
+            'source_image'   => $upload_data['full_path'],
+            'maintain_ratio' => TRUE,
+            'width'          => $max,
+            'height'         => $max,
+            'quality'        => '80%',
+        ]);
+        $this->image_lib->resize();
+        $this->image_lib->clear();
+    }
+
     public function index()
     {
         $data['testimonials'] = $this->Testimonials_model->get_all_testimonials_with_candidate_name();
@@ -57,6 +82,7 @@ class Testimonials extends CI_Controller
 
             if ($this->upload->do_upload('image_file')) {
                 $upload_data = $this->upload->data();
+                $this->shrink_image($upload_data);
                 $image_path = 'ALL_UPLOADS/images/' . $upload_data['file_name'];
                 
                 // Delete old image if exists
@@ -114,6 +140,7 @@ class Testimonials extends CI_Controller
 
             if ($this->upload->do_upload('image_file')) {
                 $upload_data = $this->upload->data();
+                $this->shrink_image($upload_data);
                 $image_path = 'ALL_UPLOADS/images/' . $upload_data['file_name'];
             } else {
                 $error = $this->upload->display_errors();

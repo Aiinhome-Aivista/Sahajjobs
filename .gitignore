@@ -62,3 +62,5 @@ application/sessions/ci_session*
 
 # Error logs
 error_log
+
+/ALL_UPLOADS
