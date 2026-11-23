@@ -488,6 +488,7 @@ $seo_keywords = (!empty($seo) && !empty($seo->keywords))
       }
     }
   </style>
+  <?= isset($extra_head) ? $extra_head : '' ?>
 </head>
 
 <body>

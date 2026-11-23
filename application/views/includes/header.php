@@ -858,6 +858,7 @@ $seo_keywords = (!empty($seo) && !empty($seo->keywords))
     </script>
 
    <!-- SCHEMA MARKUP END -->
+   <?= isset($extra_head) ? $extra_head : '' ?>
 </head>
 
 <body>

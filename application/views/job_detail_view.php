@@ -1,92 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-function escape($s)
-{
-    return html_escape($s);
-}
-
-function format_description_html($text)
-{
-    if (empty($text))
-        return '';
-    $lines = preg_split("/\r\n|\n|\r/", $text);
-    $html = '';
-    $inList = false;
-    $headerStartedList = false;
-
-    foreach ($lines as $raw) {
-        $raw = str_replace("\t", ' ', $raw);
-        $trim = trim($raw);
-
-        // explicit bullets
-        if (preg_match('/^\s*([-*•]|\d+\.)\s+/', $raw)) {
-            if (!$inList) {
-                $html .= '<ul>';
-                $inList = true;
-                $headerStartedList = false;
-            }
-            $item = preg_replace('/^\s*([-*•]|\d+\.)\s*/', '', $raw);
-            $html .= '<li>' . html_escape($item) . '</li>';
-            continue;
-        }
-
-        // header lines ending with colon OR keywords
-        if ($trim !== '' && (preg_match('/:\s*$/', $trim) || preg_match('/\b(key\s+responsibil|responsibil|requirements?|benefits?)\b/i', $trim))) {
-            if ($inList) {
-                $html .= '</ul>';
-                $inList = false;
-            }
-            $headerStartedList = true;
-            $html .= '<p><strong>' . html_escape(rtrim($trim, ':')) . '</strong></p>';
-            continue;
-        }
-
-        if ($trim === '') {
-            if ($headerStartedList) {
-                continue;
-            } else {
-                if ($inList) {
-                    $html .= '</ul>';
-                    $inList = false;
-                }
-                $headerStartedList = false;
-                continue;
-            }
-        }
-
-        if ($headerStartedList) {
-            if (!$inList) {
-                $html .= '<ul>';
-                $inList = true;
-            }
-            $html .= '<li>' . html_escape($trim) . '</li>';
-            continue;
-        }
-
-        if ($inList) {
-            $html .= '</ul>';
-            $inList = false;
-        }
-        $html .= '<p>' . html_escape($trim) . '</p>';
-    }
-
-    if ($inList)
-        $html .= '</ul>';
-    return $html;
-}
+// Job page content only. <html>/<head>/title/canonical/description come from includes/header.php;
+// Open Graph + JobPosting schema come from views/job_seo_head.php (see Job::view()).
 ?>
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title><?= escape($job['title']) ?> — <?= escape($job['company']) ?></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-    <style>
-        body {
+<style>
+        .job-detail-page {
             background: #f8f9fa;
             font-family: Arial, sans-serif;
             padding: 20px
@@ -143,10 +60,9 @@ function format_description_html($text)
             font-size: 16px;
         }
     </style>
-</head>
 
-<body>
-    <div class="job-detail">
+<div class="job-detail-page">
+<div class="job-detail">
         <div class="detail-header">
             <div>
                 <h2 class="detail-title"><?= escape($job['title']) ?></h2>
@@ -229,7 +145,4 @@ function format_description_html($text)
             }
         }
     </script>
-
-</body>
-
-</html>
+</div>

@@ -67,7 +67,8 @@ class Home_model extends CI_Model
         $today = date('Y-m-d');
         $this->db->select('id, title, company, location, experience, salary, last_date, created_at');
         $this->db->from('posted_jobs');
-        // $this->db->where('last_date >=', $today);
+        // Hide expired jobs (re-enabled)
+        $this->db->where("(last_date IS NULL OR last_date >= '" . $today . "')", null, false);
         $this->db->order_by('created_at', 'DESC');
         $query = $this->db->get();
         return $query->result();

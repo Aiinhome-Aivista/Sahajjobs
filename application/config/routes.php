@@ -248,6 +248,10 @@ $route['admin/post_details/index/(:num)'] = 'admin/Post_details/index/$1';
 
 $route['sitemap2709.xml'] = 'admin/Sitemap_settings/xml';
 
+// Generated sitemap (active jobs, blogs, government jobs) - see controllers/Sitemap.php.
+// The static sitemap.xml file in the web root must be removed for this route to be used.
+$route['sitemap\.xml'] = 'Sitemap/index';
+
 $route['job/view/(:num)'] = 'job/view/$1';
 
 $route['cv-maker'] = 'CV_maker/index';

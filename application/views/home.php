@@ -2533,6 +2533,11 @@ $mockInterviewUrl = $is_logged_in
 
     <script>
         window._jobDetailBase = "<?= base_url($job_search_base) ?>";
+        // Job card links: public visitors go to the crawlable job page (/job/view/ID);
+        // logged-in candidates keep the existing in-app job view.
+        window._jobDetailPrefix = "<?= ($is_logged_in && $user_role === 'candidate')
+            ? base_url('candidate_job_search') . '?job_id='
+            : base_url('job/view') . '/' ?>";
         (function () {
             // Responsive breakpoints -> cards per slide (same as companies script)
             function getCardsPerSlide() {
@@ -2566,8 +2571,7 @@ $mockInterviewUrl = $is_logged_in
 
             // Create a job card HTML (keeps design from earlier)
             function createJobCardHtml(job, cardWidthPercent, jobDetailBase) {
-                const base = window._jobDetailBase || jobDetailBase || '#';
-                const detailUrl = base.replace(/\/$/, '') + '?job_id=' + encodeURIComponent(job.id);
+                const detailUrl = window._jobDetailPrefix + encodeURIComponent(job.id);
                 return `
             <article class="job-card" style="flex: 0 0 ${cardWidthPercent}%; max-width: ${cardWidthPercent}%;">
               <div class="job-card-body">

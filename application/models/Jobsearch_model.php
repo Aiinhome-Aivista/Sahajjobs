@@ -58,7 +58,8 @@ class Jobsearch_model extends CI_Model
             );
         }
 
-        // $this->db->where("(posted_jobs.last_date IS NULL OR posted_jobs.last_date >= CURDATE())", null, false);
+        // Hide expired jobs (re-enabled)
+        $this->db->where("(posted_jobs.last_date IS NULL OR posted_jobs.last_date >= CURDATE())", null, false);
         $this->db->order_by('posted_jobs.created_at', 'DESC');
 
         return $this->db->get()->result_array();
