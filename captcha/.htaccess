@@ -1,0 +1,5 @@
+Options -Indexes
+
+<FilesMatch "\.(png|jpg|jpeg|gif)$">
+    Require all granted
+</FilesMatch>

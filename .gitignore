@@ -1,0 +1,64 @@
+.DS_Store
+
+application/cache/*
+!application/cache/index.html
+
+application/sessions/*
+!application/sessions/index.html
+
+application/logs/*
+!application/logs/index.html
+
+!application/*/.htaccess
+
+composer.lock
+tests/mocks/database/ci_test.sqlite
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+/vendor/
+
+# IDE Files
+#-------------------------
+/nbproject/
+.idea/*
+
+## Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+/tests/tests/
+/tests/results/
+
+
+# Environment and sensitive configuration
+.env
+.env.*
+!.env.example
+
+# PHP temporary files
+*.log
+*.tmp
+
+# Runtime and generated files
+/uploads/*
+!/uploads/.gitkeep
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# VS Code
+.vscode/
+
+
+# CodeIgniter session files
+ci_session*
+application/sessions/ci_session*
+
+# Error logs
+error_log

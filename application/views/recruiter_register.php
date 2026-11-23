@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SahajJobs | Employer Registration</title>
+  <link rel="canonical" href="https://www.sahajjobs.com/employer_register" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Firebase SDK (compat version for v8 style) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyArPK3Lb2xtZXeBXWXCq4_g4BopsjpNrN0",
+      authDomain: "jobnest-1353e.firebaseapp.com",
+      projectId: "jobnest-1353e",
+      storageBucket: "jobnest-1353e.firebasestorage.app",
+      messagingSenderId: "649093243578",
+      appId: "1:649093243578:web:8f9745abeacc310a229883",
+      measurementId: "G-SXWKWBFB8P"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Nunito', Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f7f8fa;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      /* Light gray */
+      border-top: 3px solid #555;
+      /* Darker gray */
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .header {
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .header-content {
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .logo img {
+      width: auto;
+      height: 60px;
+      display: block;
+    }
+
+    .login-link {
+      font-size: 15px;
+      color: #666;
+      text-align: right;
+    }
+
+    .login-link a {
+      color: #7b7a6e;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 30px auto;
+      padding: 0 20px;
+      gap: 30px;
+      flex: 1;
+    }
+
+    .left-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      padding: 30px 25px;
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      order: 1;
+    }
+
+    .left-card img {
+      width: 200px;
+      height: 50px;
+      margin-bottom: 16px;
+      object-fit: cover;
+    }
+
+    .left-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: left;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .left-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+
+    .left-card ul li {
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: #222;
+      line-height: 1.4;
+    }
+
+    .left-card ul li .green-dot {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #38b200;
+      display: inline-block;
+      position: relative;
+      margin-top: 2px;
+    }
+
+    .left-card ul li .green-dot::before {
+      content: '✔';
+      color: #fff;
+      position: absolute;
+      left: 2px;
+      top: -1px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .form-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      width: 100%;
+      max-width: 900px;
+      padding: 30px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      order: 2;
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-fields {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #0c0c0c;
+      margin-bottom: 1px;
+    }
+
+    .form-group .input-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .form-group input {
+      padding: 12px 15px;
+      font-size: 15px;
+      border: 1.5px solid #808080;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+      transition: border 0.2s;
+      width: 100%;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+      z-index: 2;
+    }
+
+    .form-group input:focus {
+      border: 1.5px solid #808080;
+      background: #fff;
+    }
+
+    .form-group .input-hint {
+      font-size: 12px;
+      color: #8a95ad;
+      margin-top: 2px;
+    }
+
+    .form-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 6px;
+    }
+
+    .checkbox-row {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .checkbox-row label {
+      font-size: 14px;
+      color: #222;
+      font-weight: 400;
+      margin-left: 3px;
+      cursor: pointer;
+    }
+
+    .terms-row {
+      font-size: 12px;
+      color: #8a95ad;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    .terms-row a {
+      color: #1d4ed8;
+      text-decoration: none;
+      margin: 0 2px;
+    }
+
+    .register-btn {
+      margin-top: 24px;
+      background: #FFF44F;
+      color: #29374d;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 30px;
+      border: none;
+      padding: 12px 0;
+      width: 100%;
+      max-width: 200px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.04);
+      transition: background 0.2s;
+    }
+
+    .register-btn:hover {
+      background: #d3c830ff;
+    }
+
+    /* Google section styles */
+    .google-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      position: relative;
+      padding-top: 25px;
+      margin-top: 25px;
+      border-top: 1px solid #e8e8e8;
+    }
+
+    .error-msg {
+      color: red;
+      font-size: 0.85em;
+      display: none;
+    }
+    
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #8f8f8fff;
+      font-size: 14px;
+    }
+
+    .or-text {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .continue-text {
+      font-size: 15px;
+      color: #222;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .google-btn {
+      border: 1px solid #FFF44F;
+      border-radius: 8px;
+      background: white;
+      color: #3078E7;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      max-width: 200px;
+      justify-content: center;
+    }
+
+    .google-btn:hover {
+      background: #f8f9fa;
+    }
+
+    .google-btn img {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal-close:hover {
+      color: #000;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .modal-success .modal-title {
+      color: #155724;
+    }
+
+    /* Alert styles */
+    .alert {
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    /* .alert-danger {
+      background: #f8d7da;
+      color: #721c24;
+    } */
+    .modal-error .modal-title {
+      color: #721c24;
+    }
+
+    .modal-error {
+      border-left: 4px solid #dc3545;
+    }
+
+    .modal-message {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .modal-success {
+      border-left: 4px solid #28a745;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (min-width: 768px) {
+      .header-content {
+        padding: 0 30px;
+      }
+
+      .container {
+        padding: 0 30px;
+        gap: 40px;
+      }
+
+      .form-card {
+        padding: 36px 48px;
+      }
+
+      .form-row {
+        flex-direction: row;
+      }
+
+      .google-section {
+        width: 200px;
+        padding-left: 24px;
+        margin-left: 24px;
+        padding-top: 0;
+        margin-top: 0;
+        border-top: none;
+        border-left: 1px solid #e8e8e8;
+      }
+
+
+    }
+
+    @media (min-width: 992px) {
+      .left-card {
+        position: sticky;
+        top: 32px;
+        order: 1;
+      }
+
+      .form-card {
+        order: 2;
+        flex: 1;
+        min-width: 60%;
+      }
+
+      .container {
+        flex-wrap: nowrap;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-content {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+
+      .login-link {
+        position: static;
+        transform: none;
+      }
+
+      .left-card,
+      .form-card {
+        border-radius: 10px;
+      }
+
+      .form-title {
+        font-size: 20px;
+      }
+
+      .register-btn {
+        align-self: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">
+        <a href="<?= base_url(); ?>">
+          <!-- <img src="<?php //base_url('assets/images/SahajJOB2.png'); ?>" alt="SahajJOB2"> -->
+          <img src="<?= base_url('./ALL_UPLOADS/images/SahajJOB2.png'); ?>" alt="SahajJOB2">
+        </a>
+      </div>
+      <div class="login-link">
+        Already Registered? <a href="<?= base_url('employer_login'); ?>">Login</a> here
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Left Card -->
+    <div class="left-card">
+      <!-- <img src="<?php //base_url('assets/images/SahajJOB2.png'); ?>" alt="SahajJOB2"> -->
+      <img src="<?= base_url('./ALL_UPLOADS/images/SahajJOB2.png'); ?>" alt="SahajJOB2">
+      <h3>As a recruiter, you can</h3>
+      <ul>
+        <li><span class="green-dot"></span>Post jobs and reach millions of job seekers</li>
+        <li><span class="green-dot"></span>Find candidates with relevant experience</li>
+        <li><span class="green-dot"></span>Build your employer brand</li>
+      </ul>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <!-- <?php if ($this->session->flashdata('success')): ?>
+        <div class="alert alert-success">
+          <?= $this->session->flashdata('success') ?>
+        </div>
+      <?php endif; ?>
+
+      <?php if ($this->session->flashdata('error')): ?>
+        <div class="alert alert-danger">
+          <?= $this->session->flashdata('error') ?>
+        </div>
+      <?php endif; ?> -->
+
+
+      <div class="form-title">Create your Recruiter account</div>
+      <div class="form-subtitle">Hire from India's No.1 Job Site</div>
+
+      <form id="emp_registration-form" action="<?= base_url('recruiter/submit'); ?>" method="post">
+        <div class="form-row">
+          <div class="form-fields">
+
+            <div class="form-group">
+              <label for="fullname">Your Name<span style="color:#e42e2e;">*</span></label>
+              <input type="text" name="fullname" id="fullname" placeholder="Enter your full name">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Official Email ID<span style="color:#e42e2e;">*</span></label>
+              <input type="email" name="email" id="email" placeholder="Enter your company email">
+              <!-- <div class="email-verification-container" style="display: flex; align-items: center; gap: 10px;">
+                <input type="email" name="email" id="email" placeholder="Enter your company email" style="flex: 1;">
+                <button type="button" id="verify-email-btn" class="verify-email-btn"
+                  style="background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; padding: 8px 12px; font-size: 14px; cursor: pointer; white-space: nowrap;">Verify
+                  Email</button>
+                <span id="email-verified" class="email-verified"
+                  style="color: #38b200; font-weight: 600; display: none;">
+                  <i class="fas fa-check-circle"></i> Verified
+                </span>
+              </div> -->
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+              <span class="input-hint">Use your company domain email</span>
+              <input type="hidden" id="email_verified_status" name="email_verified" value="0">
+            </div>
+
+            <div class="form-group">
+              <label for="company">Company Name<span style="color:#e42e2e;">*</span></label>
+              <input type="text" name="company" id="company" placeholder="Enter company name">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="designation">Designation<span style="color:#e42e2e;">*</span></label>
+              <input type="text" name="designation" id="designation" placeholder="e.g. HR Manager, Recruiter">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password<span style="color:#e42e2e;">*</span></label>
+              <div class="input-container">
+                <input type="password" name="password" id="password" placeholder="Minimum 6 characters">
+                <span class="password-toggle" id="toggle-password">
+                  <i class="far fa-eye-slash"></i>
+                </span>
+              </div>
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="country">Country<span style="color:#e42e2e;">*</span></label>
+              <select name="country" id="country">
+                <option value="">-- Select Country --</option>
+              </select>
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="mobile">Mobile Number<span style="color:#e42e2e;">*</span></label>
+              <input type="tel" name="mobile" id="mobile" placeholder="Enter your mobile number">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+              <span class="input-hint">We'll contact you for verification</span>
+            </div>
+
+
+            <div class="form-group">
+              <label for="websiteUrl">Company Website URL</label>
+              <input type="text" name="websiteUrl" id="websiteUrl" placeholder="e.g. https://www.companyname.com">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="linkedInUrl">LinkedIn URL</label>
+              <input type="text" name="linkedInUrl" id="linkedInUrl"
+                placeholder="e.g. https://www.linkedin.com/company/xyz-743258">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="fbUrl">Facebook URL</label>
+              <input type="text" name="fbUrl" id="fbUrl" placeholder="e.g. https://www.facebook.com/YourPageName/">
+              <span class="error-msg" style="color:red; font-size:0.85em; display:none;"></span>
+            </div>
+            
+            <!-- CAPTCHA SECTION -->
+            <div class="form-group">
+              <label for="captcha">Enter CAPTCHA<span style="color:#e42e2e;">*</span></label>
+
+              <div style="display:flex;align-items:center;gap:15px;margin-bottom:8px;">
+                <?= $captcha_image; ?>
+
+                <a href="javascript:void(0);" onclick="location.reload();" title="Refresh CAPTCHA"
+                  style="font-size:18px;color:#555;text-decoration:none;">
+                  <i class="fas fa-sync-alt"></i>
+                </a>
+              </div>
+
+
+              <input type="text" name="captcha" id="captcha" placeholder="Enter captcha text">
+              <span class="error-msg"></span>
+            </div>
+
+            <div class="checkbox-row">
+              <input type="checkbox" id="updates">
+              <label for="updates">Send me important updates & promotions via Email / WhatsApp</label>
+            </div>
+
+            <div class="terms-row">
+              By clicking Register, you agree to the
+              <a href="<?= base_url('terms-and-conditions'); ?>">Terms and Conditions</a> &
+              <a href="<?= base_url('privacy-policy'); ?>">Privacy Policy</a> of SahajJobs
+            </div>
+
+            <button type="submit" class="register-btn">Register as Recruiter</button>
+          </div>
+
+          <!-- Google Section -->
+          <div class="google-section">
+            <div class="or-text">Or</div>
+            <div class="continue-text">Continue with</div>
+            <button type="button" class="google-btn" id="googleSignInBtn">
+              <!-- <img src="<?php //base_url('assets/images/google.png'); ?>" alt="google"> -->
+              <img src="<?= base_url('./ALL_UPLOADS/images/google.png'); ?>" alt="google">
+              Google
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Flash Message Modal -->
+  <div id="flashModal" class="modal">
+    <div class="modal-content" id="modalContent">
+      <span class="modal-close" id="modalClose">&times;</span>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-message" id="modalMessage"></div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <?php $this->load->view('includes/footer'); ?>
+  <script>
+    document.getElementById('googleSignInBtn').addEventListener('click', function () {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then(function (result) {
+          var user = result.user;
+
+          // Send user info to CodeIgniter backend
+          fetch('<?= base_url('recruiter/google_callback') ?>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              uid: user.uid,
+              full_name: user.displayName,
+              email: user.email,
+              picture: user.photoURL,
+              provider: 'google'
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                window.location.href = '<?= base_url('recruiter_dashboard') ?>';
+              } else {
+                showFlashModal('error', 'Login failed: ' + data.message);
+              }
+            });
+        })
+        .catch(function (error) {
+          showFlashModal('error', error.message);
+        });
+    });
+
+  </script>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('emp_registration-form');
+      const fields = [
+        { id: 'fullname', name: 'Full name' },
+        { id: 'email', name: 'email' },
+        { id: 'password', name: 'Password' },
+        { id: 'mobile', name: 'Mobile number' },
+        { id: 'company', name: 'Company name' },
+        { id: 'designation', name: 'Designation' }
+      ];
+
+      // Validation function (used for both submit and input)
+      function validateField(field, value) {
+        if (!value) {
+          return `${field.name} is required.`;
+        } else {
+          if (field.id === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            if (!emailRegex.test(value)) {
+              return 'Please enter a valid email address';
+            }
+          }
+          if (field.id === 'password') {
+            if (value.length < 6) {
+              return 'Password must be at least 6 characters.';
+            }
+          }
+         if (field.id === 'mobile') {
+            const country = document.getElementById('country').value;
+            const digitsOnly = value.replace(/\D/g, '');
+
+            const dialCode = countryDialCodes[country] || '';
+            const localNumber = dialCode
+              ? digitsOnly.replace(dialCode.replace('+', ''), '')
+              : digitsOnly;
+
+            const rule = countryPhoneRules[country] || countryPhoneRules.default;
+
+            if (localNumber.length < rule.min || localNumber.length > rule.max) {
+              return `Enter a valid ${country} mobile number (${rule.min} digits).`;
+            }
+          }
+        }
+        return '';
+      }
+
+      // Validate on submit
+      form.addEventListener('submit', function (e) {
+        let isValid = true;
+
+        fields.forEach(field => {
+          const input = document.getElementById(field.id);
+          const errorSpan = input.parentElement.querySelector('.error-msg');
+          const value = input.value.trim();
+          const message = validateField(field, value);
+
+          // Reset previous
+          input.style.borderColor = '#808080';
+          errorSpan.style.display = 'none';
+          errorSpan.textContent = '';
+
+          if (message) {
+            isValid = false;
+            input.style.borderColor = 'red';
+            errorSpan.style.display = 'block';
+            errorSpan.textContent = message;
+          }
+        });
+
+        if (!isValid) {
+          e.preventDefault();
+        }
+      });
+
+      // Real-time validation on input
+      fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorSpan = input.parentElement.querySelector('.error-msg');
+        input.addEventListener('input', function () {
+          const value = input.value.trim();
+          const message = validateField(field, value);
+          if (message) {
+            input.style.borderColor = 'red';
+            errorSpan.style.display = 'block';
+            errorSpan.textContent = message;
+          } else {
+            input.style.borderColor = '#808080';
+            errorSpan.style.display = 'none';
+            errorSpan.textContent = '';
+          }
+        });
+      });
+    });
+
+    // Password toggle code
+    document.getElementById('toggle-password').addEventListener('click', function () {
+      const passwordInput = document.getElementById('password');
+      const icon = this.querySelector('i');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      }
+    });
+
+  </script>
+  <script>
+    function showEmailVerified() {
+      document.getElementById('email-verified').style.display = 'flex';
+      document.getElementById('verify-email-btn').style.display = 'none';
+      document.getElementById('email_verified_status').value = '1';
+    }
+
+    // Function to start polling backend for email verification status
+    function startPollingEmailVerification(email, button, originalText) {
+      const interval = setInterval(() => {
+        fetch('<?= base_url('recruiter/check_email_verification') ?>?email=' + encodeURIComponent(email))
+          .then(res => res.json())
+          .then(data => {
+            if (data.verified) {
+              clearInterval(interval);
+              showEmailVerified();
+              if (button) button.style.display = 'none';
+            }
+          });
+      }, 5000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const emailInput = document.getElementById('email');
+      const verifyBtn = document.getElementById('verify-email-btn');
+
+      // Start polling immediately if email field already has a value (user refresh or revisit)
+      if (emailInput.value.trim() !== '') {
+        startPollingEmailVerification(emailInput.value.trim(), verifyBtn);
+      }
+
+      // Form validation and handling as before...
+      const form = document.getElementById('registration-form');
+      const fields = [
+        { id: 'fullname', name: 'Full name' },
+        { id: 'email', name: 'Email ID' },
+        { id: 'password', name: 'Password' },
+        { id: 'mobile', name: 'Mobile number' },
+      ];
+
+      function validateField(field, value) {
+        if (!value) {
+          return `${field.name} is required.`;
+        } else {
+          if (field.id === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            if (!emailRegex.test(value)) {
+              return 'Please enter a valid email address';
+            }
+          }
+          if (field.id === 'password') {
+            if (value.length < 6) {
+              return 'Password must be at least 6 characters.';
+            }
+          }
+          if (field.id === 'mobile') {
+            const country = document.getElementById('country').value;
+            const digitsOnly = value.replace(/\D/g, '');
+
+            const dialCode = countryDialCodes[country] || '';
+            const localNumber = dialCode
+              ? digitsOnly.replace(dialCode.replace('+', ''), '')
+              : digitsOnly;
+
+            const rule = countryPhoneRules[country] || countryPhoneRules.default;
+
+            if (localNumber.length < rule.min || localNumber.length > rule.max) {
+              return `Enter a valid ${country} mobile number (${rule.min} digits).`;
+            }
+          }
+        }
+        return '';
+      }
+
+      form.addEventListener('submit', function (e) {
+        let isValid = true;
+
+        fields.forEach(field => {
+          const input = document.getElementById(field.id);
+          const errorSpan = input.parentElement.querySelector('.error-msg');
+          const value = input.value.trim();
+          const message = validateField(field, value);
+
+          input.style.borderColor = '#808080';
+          errorSpan.style.display = 'none';
+          errorSpan.textContent = '';
+
+          if (message) {
+            isValid = false;
+            input.style.borderColor = 'red';
+            errorSpan.style.display = 'block';
+            errorSpan.textContent = message;
+          }
+        });
+
+        const emailVerified = document.getElementById('email_verified_status').value;
+        if (emailVerified === '0') {
+          isValid = false;
+          alert('Please verify your email address before submitting the form.');
+        }
+
+        if (!isValid) {
+          e.preventDefault();
+        }
+      });
+
+      fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorSpan = input.parentElement.querySelector('.error-msg');
+        input.addEventListener('input', function () {
+          const value = input.value.trim();
+          const message = validateField(field, value);
+          if (message) {
+            input.style.borderColor = 'red';
+            errorSpan.style.display = 'block';
+            errorSpan.textContent = message;
+          } else {
+            input.style.borderColor = '#808080';
+            errorSpan.style.display = 'none';
+            errorSpan.textContent = '';
+          }
+        });
+      });
+    });
+
+    // Email verification button click handler
+    document.getElementById('verify-email-btn').addEventListener('click', function () {
+      const email = document.getElementById('email').value.trim();
+
+      if (!email) {
+        alert('Please enter your email address first');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address');
+        return;
+      }
+
+      const button = this;
+      const originalText = button.innerHTML;
+
+      button.disabled = true;
+      button.innerHTML = 'Sending <span class="spinner"></span>';
+
+      fetch('<?= base_url('recruiter/send_verification_email') ?>', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'email=' + encodeURIComponent(email)
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Verification email sent! Please check your inbox.');
+            startPollingEmailVerification(email, button, originalText); // Start polling after success
+          } else {
+            alert('Error: ' + data.message);
+            button.disabled = false;
+            button.innerHTML = originalText;
+          }
+        })
+        .catch(error => {
+          alert('Error sending verification email');
+          console.error('Error:', error);
+          button.disabled = false;
+          button.innerHTML = originalText;
+        });
+    });
+
+
+  </script>
+  <script>
+    // Show flash messages in modal
+    document.addEventListener('DOMContentLoaded', function () {
+      <?php if ($this->session->flashdata('success')): ?>
+        showFlashModal('success', '<?= $this->session->flashdata('success') ?>');
+      <?php endif; ?>
+
+      <?php if ($this->session->flashdata('error')): ?>
+        showFlashModal('error', '<?= $this->session->flashdata('error') ?>');
+      <?php endif; ?>
+
+      function showFlashModal(type, message) {
+        const modal = document.getElementById('flashModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Set modal content based on type
+        if (type === 'success') {
+          modalTitle.textContent = 'Success';
+          modalContent.classList.add('modal-success');
+        } else {
+          modalTitle.textContent = 'Error';
+          modalContent.classList.add('modal-error');
+        }
+
+        modalMessage.textContent = message;
+        modal.style.display = 'block';
+
+        // Auto close after 5 seconds
+        setTimeout(() => {
+          modal.style.display = 'none';
+        }, 15000);
+      }
+
+      // Close modal when clicking close button
+      document.getElementById('modalClose').addEventListener('click', function () {
+        document.getElementById('flashModal').style.display = 'none';
+      });
+
+      // Close modal when clicking outside
+      window.addEventListener('click', function (event) {
+        const modal = document.getElementById('flashModal');
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    });
+  </script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+      const countrySelect = document.getElementById("country");
+      const mobileInput = document.getElementById("mobile");
+
+      if (!countrySelect || !mobileInput) return;
+
+      const countries = [
+        "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia",
+        "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Belgium",
+        "Brazil", "Bulgaria", "Cambodia", "Canada", "Chile", "China", "Colombia", "Croatia",
+        "Denmark", "Egypt", "Finland", "France", "Germany", "Greece", "Hong Kong", "Hungary",
+        "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Japan",
+        "Kenya", "Kuwait", "Malaysia", "Mexico", "Netherlands", "New Zealand", "Nigeria",
+        "Norway", "Oman", "Pakistan", "Philippines", "Poland", "Portugal", "Qatar", "Romania",
+        "Russia", "Saudi Arabia", "Singapore", "South Africa", "South Korea", "Spain",
+        "Sri Lanka", "Sweden", "Switzerland", "Thailand", "Turkey", "UAE", "UK", "USA",
+        "Vietnam", "Zimbabwe"
+      ];
+
+      // Populate country dropdown
+      countries.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+        countrySelect.appendChild(option);
+      });
+
+      // Country change → set dial code
+      countrySelect.addEventListener("change", function () {
+        const country = this.value;
+        mobileInput.value = countryDialCodes[country]
+          ? countryDialCodes[country] + " "
+          : "";
+        mobileInput.placeholder = "Enter mobile number";
+      });
+
+      // Input handler → limit LOCAL digits only
+      mobileInput.addEventListener("input", function () {
+        const country = countrySelect.value;
+        const countryCode = countryDialCodes[country] || '';
+        const maxDigits = (countryPhoneRules[country] || countryPhoneRules.default).max;
+
+        // Get digits only
+        let digits = mobileInput.value.replace(/\D/g, '');
+
+        // Remove country code digits if user retypes them
+        if (countryCode) {
+          const codeDigits = countryCode.replace(/\D/g, '');
+          if (digits.startsWith(codeDigits)) {
+            digits = digits.slice(codeDigits.length);
+          }
+        }
+
+        // Enforce max local digits
+        if (digits.length > maxDigits) {
+          digits = digits.slice(0, maxDigits);
+        }
+
+        // Rebuild final value (NO DOUBLE +)
+        mobileInput.value = countryCode
+          ? countryCode + " " + digits
+          : digits;
+      });
+
+    });
+  </script>
+
+
+
+
+
+  <script>
+    const countryDialCodes = {
+      "Afghanistan": "+93",
+      "Albania": "+355",
+      "Algeria": "+213",
+      "Andorra": "+376",
+      "Angola": "+244",
+      "Argentina": "+54",
+      "Armenia": "+374",
+      "Australia": "+61",
+      "Austria": "+43",
+      "Azerbaijan": "+994",
+      "Bahamas": "+1",
+      "Bahrain": "+973",
+      "Bangladesh": "+880",
+      "Belgium": "+32",
+      "Brazil": "+55",
+      "Bulgaria": "+359",
+      "Cambodia": "+855",
+      "Canada": "+1",
+      "Chile": "+56",
+      "China": "+86",
+      "Colombia": "+57",
+      "Croatia": "+385",
+      "Denmark": "+45",
+      "Egypt": "+20",
+      "Finland": "+358",
+      "France": "+33",
+      "Germany": "+49",
+      "Greece": "+30",
+      "Hong Kong": "+852",
+      "Hungary": "+36",
+      "Iceland": "+354",
+      "India": "+91",
+      "Indonesia": "+62",
+      "Iran": "+98",
+      "Iraq": "+964",
+      "Ireland": "+353",
+      "Israel": "+972",
+      "Italy": "+39",
+      "Japan": "+81",
+      "Kenya": "+254",
+      "Kuwait": "+965",
+      "Malaysia": "+60",
+      "Mexico": "+52",
+      "Netherlands": "+31",
+      "New Zealand": "+64",
+      "Nigeria": "+234",
+      "Norway": "+47",
+      "Oman": "+968",
+      "Pakistan": "+92",
+      "Philippines": "+63",
+      "Poland": "+48",
+      "Portugal": "+351",
+      "Qatar": "+974",
+      "Romania": "+40",
+      "Russia": "+7",
+      "Saudi Arabia": "+966",
+      "Singapore": "+65",
+      "South Africa": "+27",
+      "South Korea": "+82",
+      "Spain": "+34",
+      "Sri Lanka": "+94",
+      "Sweden": "+46",
+      "Switzerland": "+41",
+      "Thailand": "+66",
+      "Turkey": "+90",
+      "UAE": "+971",
+      "UK": "+44",
+      "USA": "+1",
+      "Vietnam": "+84",
+      "Zimbabwe": "+263"
+    };
+
+    const countryPhoneRules = {
+      Afghanistan: { min: 9, max: 9 },
+      Albania: { min: 9, max: 9 },
+      Algeria: { min: 9, max: 9 },
+      Andorra: { min: 6, max: 6 },
+      Angola: { min: 9, max: 9 },
+      Argentina: { min: 10, max: 10 },
+      Armenia: { min: 8, max: 8 },
+      Australia: { min: 9, max: 9 },
+      Austria: { min: 10, max: 11 },
+      Azerbaijan: { min: 9, max: 9 },
+      Bahamas: { min: 10, max: 10 },
+      Bahrain: { min: 8, max: 8 },
+      Bangladesh: { min: 10, max: 10 },
+      Belgium: { min: 9, max: 9 },
+      Brazil: { min: 10, max: 11 },
+      Bulgaria: { min: 9, max: 9 },
+      Cambodia: { min: 8, max: 9 },
+      Canada: { min: 10, max: 10 },
+      Chile: { min: 9, max: 9 },
+      China: { min: 11, max: 11 },
+      Colombia: { min: 10, max: 10 },
+      Croatia: { min: 9, max: 9 },
+      Denmark: { min: 8, max: 8 },
+      Egypt: { min: 10, max: 10 },
+      Finland: { min: 9, max: 10 },
+      France: { min: 9, max: 9 },
+      Germany: { min: 10, max: 11 },
+      Greece: { min: 10, max: 10 },
+      "Hong Kong": { min: 8, max: 8 },
+      Hungary: { min: 9, max: 9 },
+      Iceland: { min: 7, max: 7 },
+      India: { min: 10, max: 10 },
+      Indonesia: { min: 9, max: 11 },
+      Iran: { min: 10, max: 10 },
+      Iraq: { min: 10, max: 10 },
+      Ireland: { min: 9, max: 9 },
+      Israel: { min: 9, max: 9 },
+      Italy: { min: 9, max: 10 },
+      Japan: { min: 10, max: 10 },
+      Kenya: { min: 9, max: 9 },
+      Kuwait: { min: 8, max: 8 },
+      Malaysia: { min: 9, max: 10 },
+      Mexico: { min: 10, max: 10 },
+      Netherlands: { min: 9, max: 9 },
+      "New Zealand": { min: 8, max: 9 },
+      Nigeria: { min: 10, max: 11 },
+      Norway: { min: 8, max: 8 },
+      Oman: { min: 8, max: 8 },
+      Pakistan: { min: 10, max: 10 },
+      Philippines: { min: 10, max: 10 },
+      Poland: { min: 9, max: 9 },
+      Portugal: { min: 9, max: 9 },
+      Qatar: { min: 8, max: 8 },
+      Romania: { min: 9, max: 9 },
+      Russia: { min: 10, max: 10 },
+      "Saudi Arabia": { min: 9, max: 9 },
+      Singapore: { min: 8, max: 8 },
+      "South Africa": { min: 9, max: 9 },
+      "South Korea": { min: 9, max: 10 },
+      Spain: { min: 9, max: 9 },
+      "Sri Lanka": { min: 9, max: 9 },
+      Sweden: { min: 9, max: 9 },
+      Switzerland: { min: 9, max: 9 },
+      Thailand: { min: 9, max: 10 },
+      Turkey: { min: 10, max: 10 },
+      UAE: { min: 9, max: 9 },
+      UK: { min: 10, max: 10 },
+      USA: { min: 10, max: 10 },
+      Vietnam: { min: 9, max: 10 },
+      Zimbabwe: { min: 9, max: 9 },
+
+      default: { min: 6, max: 15 }
+    };
+
+  </script>
+
+</body>
+
+</html>
