@@ -1,11 +1,13 @@
-<?php include('includes/header.php'); ?>
+<?php
+$seo = (object) ['title' => 'Credits | SahajJobs', 'description' => 'Credits and acknowledgements for the open-source tools, libraries and resources used to build the SahajJobs job portal.'];
+include('includes/header.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credits - SahajJobs</title>
     <style>
         body {
             font-family: 'Nunito', Arial, sans-serif;

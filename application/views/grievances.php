@@ -1,10 +1,12 @@
-<?php include('includes/header.php'); ?>
+<?php
+$seo = (object) ['title' => 'Grievances | SahajJobs', 'description' => 'Submit a grievance or complaint to SahajJobs. Learn how we handle and resolve user concerns about jobs, employers and your account.'];
+include('includes/header.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grievances - SahajJobs</title>
     <style>
         body {
             font-family: 'Nunito', Arial, sans-serif;

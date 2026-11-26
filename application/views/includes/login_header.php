@@ -2,11 +2,20 @@
 $user_name = $this->session->userdata('user_name') ?: 'User';
 $seo_title = (!empty($seo) && !empty($seo->title))
   ? $seo->title
-  : 'Recruitment and Jobs Online in India, UAE and entire world | SahajJobs';
+  : 'Jobs in India & UAE | Free Job Portal | SahajJobs';
 
 $seo_description = (!empty($seo) && !empty($seo->description))
   ? $seo->description
   : 'Find jobs in India and international markets. Free job posting, best job portal for freshers.';
+
+// Per-page overrides (config/page_seo.php) so titles/descriptions are unique
+$CI_seo =& get_instance();
+$CI_seo->config->load('page_seo', TRUE, TRUE);
+$page_seo_map = (array) $CI_seo->config->item('page_seo', 'page_seo');
+$page_seo_key = trim(uri_string(), '/');
+if (isset($page_seo_map[$page_seo_key])) {
+  list($seo_title, $seo_description) = $page_seo_map[$page_seo_key];
+}
 
 $seo_keywords = (!empty($seo) && !empty($seo->keywords))
   ? $seo->keywords

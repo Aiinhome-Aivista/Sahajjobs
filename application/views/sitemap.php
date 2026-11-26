@@ -1,4 +1,7 @@
-<?php include('includes/header.php'); ?>
+<?php
+$seo = (object) ['title' => 'Sitemap | SahajJobs', 'description' => 'Browse the SahajJobs sitemap: main sections, help and support, legal and safety pages in one place.'];
+include('includes/header.php');
+?>
 
 <h1>Sitemap</h1>
 <p>This page provides a comprehensive list of all the main sections and pages on the SahajJobs website to help you navigate our site with ease.</p>

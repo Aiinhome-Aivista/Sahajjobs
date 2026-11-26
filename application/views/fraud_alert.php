@@ -1,10 +1,12 @@
-<?php include('includes/header.php'); ?>
+<?php
+$seo = (object) ['title' => 'Fraud Alert | SahajJobs', 'description' => 'Stay safe from fake job offers and recruitment scams. Learn how to spot fraud and report suspicious job postings on SahajJobs.'];
+include('includes/header.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fraud Alert - SahajJobs</title>
     <style>
         body {
             font-family: 'Nunito', Arial, sans-serif;

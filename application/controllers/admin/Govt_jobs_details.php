@@ -32,7 +32,16 @@ class Govt_jobs_details extends CI_Controller
 
         $data['job'] = $this->GovtJob_model->get_govt_jobs_by_id($job_id);
 
-        $this->load->view('includes/header');
+        if (!empty($data['job'])) {
+            $j = $data['job'];
+            $title = trim($j->title . (empty($j->organization) ? '' : ' - ' . $j->organization));
+            $data['seo'] = (object) [
+                'title' => mb_strimwidth($title, 0, 52, '...') . ' | SahajJobs',
+                'description' => mb_strimwidth('Apply for ' . $title . '. Check vacancies, eligibility, important dates and how to apply on SahajJobs.', 0, 158, '...'),
+            ];
+        }
+
+        $this->load->view('includes/header', $data);
         $this->load->view('admin/govt_jobs_details', $data);
         $this->load->view('includes/footer');
     }
