@@ -24,21 +24,7 @@ $mockInterviewUrl = $is_logged_in
      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4658394539738219"
      crossorigin="anonymous"></script>
 
-<!--
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title><?= isset($meta_title) ? $meta_title : 'SahajJobs - India & UAE Jobs' ?></title>
-
-    <meta name="description"
-        content="<?= isset($meta_description) ? $meta_description : 'Find jobs in India and international markets. Free job posting, best job portal for freshers, hire employees online, recruitment solutions, candidate search, resume database, talent acquisition platform' ?>">
-
-    <meta name="keywords"
-        content="<?= isset($meta_keywords) ? $meta_keywords : 'jobs, job portal, job search, employment, career portal, hiring, recruitment platform, remote work, job listings, jobs in India, entry level jobs, finance jobs, healthcare jobs, IT jobs, urgent hiring, walk-in jobs,' ?>">
--->
-
-    <!-- Preload the hero image (LCP) so the browser starts downloading it immediately -->
+<!-- Preload the hero image (LCP) so the browser starts downloading it immediately -->
     <link rel="preload" as="image" href="./ALL_UPLOADS/images/SahajLanding1-1280.webp" type="image/webp"
         media="(max-width: 768px)" fetchpriority="high">
     <link rel="preload" as="image" href="./ALL_UPLOADS/images/SahajLanding1-1920.webp" type="image/webp"
