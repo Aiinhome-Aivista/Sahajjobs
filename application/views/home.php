@@ -1193,9 +1193,23 @@ $mockInterviewUrl = $is_logged_in
             box-sizing: border-box;
             width: 100%;
             flex: 0 0 24% !important;
+            position: relative;
+            cursor: pointer;
+            transition: box-shadow .2s ease, transform .2s ease;
         }
 
+        .job-card:hover {
+            box-shadow: 0 10px 24px rgba(9, 30, 66, 0.16);
+            transform: translateY(-2px);
+        }
 
+        /* Make the whole card clickable: the "View job" link stretches over the card */
+        .job-card .btn-apply::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+        }
 
         .job-card-body {
             text-align: left;
