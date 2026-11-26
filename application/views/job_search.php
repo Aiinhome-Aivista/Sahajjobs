@@ -443,6 +443,25 @@
 
 
 
+        .detail-actions {
+            display: flex;
+            gap: 8px;
+            align-self: flex-start; /* don't stretch to the title block's height */
+            align-items: stretch;   /* both buttons share the same (natural) height */
+        }
+
+        .share-btn {
+            background: #e9ecef;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
         .apply-btn {
 
             background-color: #2563eb;
@@ -1393,6 +1412,47 @@
 
         /* ---------- showJobDetails (keeps your markup; kept same as original) ---------- */
 
+        // Copy the job-search link (opens this layout with the job selected) to the clipboard (button text changes to "Copied!")
+        function copyJobLink(jobId, btn) {
+            const url = "<?= base_url('job_search'); ?>?job_id=" + encodeURIComponent(jobId);
+            const done = function () {
+                if (!btn) return;
+                const old = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(function () { btn.innerHTML = old; }, 2000);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(url).then(done);
+            } else {
+                const t = document.createElement('textarea');
+                t.value = url;
+                t.style.position = 'fixed';
+                t.style.opacity = '0';
+                document.body.appendChild(t);
+                t.select();
+                try { document.execCommand('copy'); done(); } catch (e) { prompt('Copy this job link:', url); }
+                document.body.removeChild(t);
+            }
+        }
+
+        // Share a job: native share sheet if available, otherwise copy the public job link
+        function shareJob(jobId, btn) {
+            const job = jobData.find(j => j.id == jobId);
+            if (!job) return;
+            const shareUrl = "<?= base_url('job/view/'); ?>" + job.id;
+            const shareText = "Check out this job: " + job.title + " at " + job.company;
+            if (navigator.share) {
+                navigator.share({ title: job.title, text: shareText, url: shareUrl })
+                    .catch(function (err) { console.log("Share failed:", err); });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareUrl).then(function () {
+                    alert("Share link copied: " + shareUrl);
+                });
+            } else {
+                prompt("Copy this job link:", shareUrl);
+            }
+        }
+
         function showJobDetails(jobId) {
 
             const job = jobData.find(j => j.id == jobId);
@@ -1567,11 +1627,25 @@
 
         </div>
 
-        <button class="apply-btn" style="background-color: #FFF44F; color: black;" onclick="window.location.href='<?= base_url('?showLogin=true'); ?>'">
+        <div class="detail-actions">
 
-            Apply Now
+            <!-- Share button (disabled for now)
+            <button type="button" class="share-btn" onclick="shareJob(${job.id}, this)">
+                <i class="fa-solid fa-share"></i> Share
+            </button>
+            -->
 
-        </button>
+            <button type="button" class="share-btn" onclick="copyJobLink(${job.id}, this)">
+                <i class="fa-solid fa-link"></i> Copy link
+            </button>
+
+            <button class="apply-btn" style="background-color: #FFF44F; color: black;" onclick="window.location.href='<?= base_url('?showLogin=true'); ?>'">
+
+                Apply Now
+
+            </button>
+
+        </div>
 
     </div>
 

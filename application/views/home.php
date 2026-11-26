@@ -2538,6 +2538,14 @@ $mockInterviewUrl = $is_logged_in
         window._jobDetailPrefix = "<?= ($is_logged_in && $user_role === 'candidate')
             ? base_url('candidate_job_search') . '?job_id='
             : base_url('job/view') . '/' ?>";
+        // Real visitors open the job in the job-search layout (list + details + share);
+        // the plain /job/view/ID href stays in the HTML so search engines can crawl it.
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a.btn-apply[data-app-url]');
+            if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+            e.preventDefault();
+            window.location.href = a.getAttribute('data-app-url');
+        });
         (function () {
             // Responsive breakpoints -> cards per slide (same as companies script)
             function getCardsPerSlide() {
@@ -2598,7 +2606,7 @@ $mockInterviewUrl = $is_logged_in
               </div>
 
               <div class="job-action">
-                <a class="btn-apply" href="${detailUrl}">View job</a>
+                <a class="btn-apply" href="${detailUrl}" data-app-url="${window._jobDetailBase + '?job_id=' + encodeURIComponent(job.id)}">View job</a>
               </div>
             </article>
         `;
